@@ -7,7 +7,7 @@ const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('mydb.db');
 
 //GETアクセスの処理
-router.get('/', (req, res, next) => {
+router.get('/ok', (req, res, next) => {
     //データベースのシリアライズ
     db.serialize(() => {
         //レコードを全て取り出す
