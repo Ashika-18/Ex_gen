@@ -7,11 +7,11 @@ const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('mydb.db');
 
 //GETアクセスの処理
-router.get('/ok', (req, res, next) => {
+router.get('/', function (req, res, next) {
     //データベースのシリアライズ
     db.serialize(() => {
         //レコードを全て取り出す
-        db.all("select * from mydata", (err, rows) => {
+        db.all("select * from mydb", (err, rows) => {
             //データベースアクセス完了時の処理
             if (!err) {
                 var data = {
