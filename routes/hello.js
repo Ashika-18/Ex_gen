@@ -6,7 +6,7 @@ const sqlite3 = require('sqlite3');
 //データオブジェクトの取得
 const db = new sqlite3.Database('mydb.db');
 
-//GETアクセスの処理
+//indexアクセスの処理
 router.get('/', (req, res, next) => {
     db.serialize(() => {
         var rows = "";
@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-//GETとPOSTアクセスの処理
+//addアクセスの処理
 router.get('/add', (req, res, next) => {
     var data = {
         title: 'Hello/Add',
@@ -44,6 +44,24 @@ router.post('/add', (req, res, next) => {
         nm, ml, ag);
     });
     res.redirect('/hello');
+});
+
+//showアクセスの処理
+router.get('/show', (req, res, next) => {
+    const id = req.query.id;
+    db.serialize(() => {
+        const q = "select * from mydb where id = ?";
+        db.get(q, [id], (err, row) => {
+            if (!err) {
+                var data = {
+                    title: 'Hello/Show',
+                    content: 'id = ' + id + 'のレコード:',
+                    mydata: row
+                }
+                res.render('hello/show', data);
+            }
+        });
+    });
 });
 
 module.exports = router;

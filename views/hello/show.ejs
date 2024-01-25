@@ -12,7 +12,21 @@
         <h1 class="display-4"><%= title %></h1>
     </header>
     <div role="main">
-       
+       <p><%= content %></p>
+       <table class="table">
+        <tr>
+            <th>ID</th>
+            <td><%= mydata.id %></td>
+        </tr>
+        <tr>
+            <th>NAME</th>
+            <td><%= mydata.name %></td>
+        </tr>
+        <tr>
+            <th>MAIL</th>
+            <td><%= mydata.age %></td>
+        </tr>
+       </table>
     </div>
 </body>
 </html>
