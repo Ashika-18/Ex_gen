@@ -124,7 +124,7 @@ router.post('/delete', (req, res, next) => {
 //find処理
 router.get('/find', (req, res, next) => {
     db.serialize(() => {
-        db.all("select * from mydb ", (err, rows) => {
+        db.all("select * from mydb", (err, rows) => {
             if (!err) {
                 var data = {
                     title: 'Hello/Find',
@@ -150,7 +150,7 @@ router.post('/find', (req, res, next) => {
                     content: '検索条件' + find,
                     mydata: rows
                 }
-                res.render('/hello/find', data);
+                res.render('hello/find', data);
             }
         });
     });
