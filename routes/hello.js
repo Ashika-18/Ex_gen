@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
         var rows = "";
         db.each("select * from mydb", (err, row) => {
             if (!err) {
-                rows += "<tr><th>" + row.id + "</th><td>" + row.name + "</td></tr>";
+                rows += "<tr><th>" + row.id + "</th><td>" + row.name +"</td><td>" + row.age + "</td></tr>";
             }
         }, (err, count) => {
             if (!err) {
@@ -141,7 +141,7 @@ router.get('/find', (req, res, next) => {
 router.post('/find', (req, res, next) => {
     var find = req.body.find;
     db.serialize(() => {
-        var q = "select * from mydb where" ;
+        var q = "select * from mydb where";
         db.all(q + find, [], (err, rows) => {
             if (!err) {
                 var data = {
