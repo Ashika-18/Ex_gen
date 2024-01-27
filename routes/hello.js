@@ -127,7 +127,7 @@ router.get('/find', (req, res, next) => {
         db.all("select * from mydb", (err, rows) => {
             if (!err) {
                 var data = {
-                    title: 'Hello/Find',
+                    title: 'Hello/Find/検索前',
                     find: '',
                     content: '検索条件を入力して下さい。',
                     mydata: rows
@@ -141,11 +141,11 @@ router.get('/find', (req, res, next) => {
 router.post('/find', (req, res, next) => {
     var find = req.body.find;
     db.serialize(() => {
-        var q = "select * from mydb where";
+        var q = "select * from mydb where ";
         db.all(q + find, [], (err, rows) => {
             if (!err) {
                 var data = {
-                    title: 'Hello/Find',
+                    title: 'Hello/Find/検索後',
                     find: find,
                     content: '検索条件' + find,
                     mydata: rows
