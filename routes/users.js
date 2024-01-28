@@ -73,7 +73,7 @@ router.post('/add', (req, res, next) => {
 router.get('/edit/:id', (req, res, next) => {
   const id = req.params.id;
   prisma.user.findUnique(
-    { where: { id: id}}
+    { where: { id: +id}}
     ).then(usr => {
       const data = {
         title: 'User/Edit',
@@ -93,7 +93,8 @@ router.post('/edit', (req, res, next) => {
       pass: pass,
       age: +age
     }
-  }).then(() => {
+  }).then((updateUser) => {
+    console.log(updateUser.name + 'を更新しました！🐸');
     res.redirect('/users');
   });
 });
