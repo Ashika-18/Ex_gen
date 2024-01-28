@@ -14,16 +14,30 @@ router.get('/', (req, res, next) => {
       res.render('users/index', data);
     });
   } else {
-    prisma.user.findUnique({
-      where: { id: id }
-    }).then(usr => {
+    prisma.user.findMany({
+      where: { id: {gt: id} }
+    }).then(usrs => {
       var data = {
         title: 'Users/Index',
-        content: [usr]
+        content: usrs
       }
       res.render('users/index', data);
     });
   }
+});
+
+//like検索
+router.get('/find', (req, res, next) => {
+  const name = req.query.name;
+  prisma.user.findMany({
+    where: {name: {contains: name} }
+  }).then(usrs => {
+    var data = {
+      title: 'Users/Find',
+      content: usrs
+    }
+    res.render('users/index', data);
+  });
 });
 
 module.exports = router;
