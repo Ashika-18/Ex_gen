@@ -3,27 +3,31 @@ var router = express.Router();
 const ps = require('@prisma/client');
 const prisma = new ps.PrismaClient();
 
-router.get('/', (req, res, next) => {
-  const id = +req.query.id;
-  if (!id) {
-    prisma.user.findMany().then( users => {
-      const data = {
-        title: 'Users/Index',
-        content: users
-      }
-      res.render('users/index', data);
-    });
-  } else {
-    prisma.user.findMany({
-      where: { id: {gt: id} }
-    }).then(usrs => {
-      var data = {
-        title: 'Users/Index',
-        content: [usrs]
-      }
-      res.render('users/index', data);
-    });
+var lastCursor = 0;
+var cursor = 1;
+
+prisma.$use(async (params, next) => {
+  const result = await next(params);
+  cursor = result[result.length - 1].id;
+  if (cursor == lastCursor) {
+    cursor = 1;
   }
+  lastCursor = cursor;
+  return result;
+});
+
+router.get('/', (req, res, next) => {
+  prisma.user.findMany({
+    orderBy: [{id: 'asc'}],
+    cursor: { id:cursor },
+    take: 3,
+  }).then( users=> {
+    const data = {
+      title: 'Users/Index',
+      content: users
+    }
+    res.render('users/index', data);
+  });
 });
 
 //like検索
