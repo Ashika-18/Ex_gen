@@ -42,7 +42,7 @@ router.get('/:page', (req, res, next) => {
             content: brds,
             page: pg
         }
-        res.render('/boards/index', data);
+        res.render('boards/index', data);
     });
 });
 
