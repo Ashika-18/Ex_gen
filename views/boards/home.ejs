@@ -12,21 +12,22 @@
         <h1 class="display-4"><%= title %></h1>
     </header>
     <div role="main">
-       <p class="h4"><%= user.name %>さんのメッセージ</p>
-       <table class="table mt-5">
-         <% for (let i in content) { %>
-         <%- include ('data_item', { val: content[i] }) %>
-         <% } %>
-       </table>
+        <p>これはboardsのhomeです</p>
+        <p class="h4"><%= userName %>さんのメッセージ</p>
+        <table class="table mt-5">
+            <% for (let i in content) { %>
+            <%- include ('data_item', { val: content[i] }) %>
+            <% } %>
+        </table>
 
-       <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page - 1 %>" class="page-link">&lt;&lt; prev</a>
-        </li>
-        <li>
-            <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page + 1 %>" class="page-link">Next &gt;&gt;</a>
-        </li>
-       </ul>
+        <ul class="pagenation justify-content-center">
+            <li class="page-item">
+                <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page - 1 %>" class="page-link">&lt;&lt; prev</a>
+            </li>
+            <li>
+                <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page + 1 %>" class="page-link">Next &gt;&gt;</a>
+            </li>
+        </ul>
     </div>
     <div class="text-left">
         <a href="/boards">&lt;&lt; Topへ </a>

@@ -12,30 +12,31 @@
         <h1 class="display-4"><%= title %></h1>
     </header>
     <div role="main">
-       <p class="h4"> ようこそ <%= login.name %>さん</p>
-       <form action="/boards/add" method="post">
-        <div class="row">
-            <div class="col-10">
-                <input type="text" name="msg" class="form-control">
+        <p>これはboardsのindexですよん!🥺</p>
+        <p class="h4"> ようこそ <%= login.name %>さん</p>
+        <form action="/boards/add" method="post">
+            <div class="row">
+                <div class="col-10">
+                    <input type="text" name="msg" class="form-control">
+                </div>
+                <input type="submit" value="送信" class="btn btn-success col-2">
             </div>
-            <input type="submit" value="送信" class="btn btn-success col-2">
-        </div>
-       </form>
+        </form>
 
-       <table class="table mt-5">
-        <% for (let i in content) { %>
-        <%- include('data_item', { val: content[i] }) %>
-        <% } %>
-       </table>
+        <table class="table mt-5">
+            <% for (let i in content) { %>
+            <%- include('data_item', { val: content[i] }) %>
+            <% } %>
+        </table>
 
-       <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a href="/boards/<%= page - 1 %>" class="page-link">&lt;&lt; prev</a>
-        </li>
-        <li class="page-item">
-            <a href="/boards/<%= page + 1 %>" class="page-link">Next &gt;&gt;</a>
-        </li>
-       </ul>
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a href="/boards/<%= page - 1 %>" class="page-link">&lt;&lt; prev</a>
+            </li>
+            <li class="page-item">
+                <a href="/boards/<%= page + 1 %>" class="page-link">Next &gt;&gt;</a>
+            </li>
+        </ul>
     </div>
 </body>
 </html>
