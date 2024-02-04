@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const sqlite3 = require('sqlite3');
+const pg = require('pg');
 
-//データオブジェクトの取得
-const db = new sqlite3.Database('mydb.db');
+const connectionString = "postgres://ashika:PSnehSjO2kPoVUC1Jt89qfbdAqeDLyLJ@dpg-cmvlut8l5elc73ef4570-a.singapore-postgres.render.com/mydb_g3ny"
+
+const client = new pg.Client({
+  connectionString: connectionString,
+});
 
 //indexアクセスの処理
 router.get('/', (req, res, next) => {
