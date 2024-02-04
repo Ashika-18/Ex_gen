@@ -33,12 +33,10 @@ router.get('/', (req, res, next) => {
 //like検索
 router.get('/find', (req, res, next) => {
   const name = req.query.name;
-  const mail = req.query.mail;
   prisma.user.findMany({
     where: { 
       OR: [
         { name: { contains: name }},
-        { mail: { contains: mail }}
       ]
     }
   }).then(usrs => {
@@ -91,9 +89,7 @@ router.post('/edit', (req, res, next) => {
     where: { id: +id },
     data: {
       name: name,
-      mail: mail,
-      pass: pass,
-      age: +age
+      pass: pass
     }
   }).then((updateUser) => {
     console.log(updateUser.name + 'を更新しました！🐸');
