@@ -8,7 +8,8 @@ var cursor = 1;
 
 prisma.$use(async (params, next) => {
   const result = await next(params);
-  cursor = result[result.length - 1].id;
+  // cursor = result[result.length - 1].id;
+  cursor = result && result.length > 0 ? result[result.length - 1].id : 1;
   if (cursor == lastCursor) {
     cursor = 1;
   }
@@ -145,7 +146,8 @@ router.post('/login', (req, res, next) => {
     } else {
       var data = {
         title: 'Users/Login',
-        content: '名前かパスワードに問題があります！再入力をお願いします。'
+        content: '<span style="color: red;">名前かパスワードに問題があります！再入力をお願いします。</span>',
+        
       }
       res.render('users/login', data);
     }
