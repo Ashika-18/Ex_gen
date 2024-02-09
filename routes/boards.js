@@ -90,4 +90,39 @@ router.get('/home/:user/:id/:page', (req, res, next) => {
     });
 });
 
+// メッセージ削除の追加
+router.post('/delete/:id', (req, res, next) => {
+    if (check(req, res)) { return };
+    const messageId = +req.params.id;
+    const accountId = req.session.login.id;
+
+    // メッセージの所有者の確認
+    prisma.Board.findUnique({
+        where: { id: messageId },
+        select: { accountId: true }
+    }).then(board => {
+        if (board && board.accountId === accountId) {
+            prisma.Board.delete({
+                where: { id: messageId }
+            }).then(() => {
+                res.redirect('/boards');
+            }).catch(error => {
+                var data = {
+                    title: 'User/Delete',
+                    content: '削除中にエラーが発生しました。<br>' + error.message
+                }
+                res.render('/delete', data);
+            });
+        } else {
+            res.status(403).send('このメッセージを削除する権限がありません。');
+        }
+    }).catch(error => {
+        var data = {
+            title: 'User/Delete',
+            content: 'メッセージの取得中にエラーが発生しました。<br>' + error.message
+        }
+        res.render('/delete', data);
+    });
+});
+
 module.exports = router;
