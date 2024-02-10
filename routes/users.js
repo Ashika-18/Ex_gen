@@ -68,8 +68,20 @@ router.post('/add', (req, res, next) => {
     }
   })
   .then((createdUser) => {
-    console.log(createdUser.name + "が作成されました!🐉");
-    res.redirect('/users');
+    const data = {
+      title: 'User Created',
+      content: [createdUser],
+      message: `${createdUser.name} が作成されました!🐉`
+    };
+    res.render('users/index', data);
+  })
+  .catch((error) => {
+    const data = {
+      title: 'Error',
+      message: 'ユーザーの作成中にエラーが発生しました。もう一度試してください。',
+      error: error
+    };
+    res.render('error', data);
   });
 });
 
