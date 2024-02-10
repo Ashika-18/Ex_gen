@@ -6,13 +6,14 @@
     <title><%= title %></title>
     <link rel="stylesheet" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/main.js" defer></script>
 </head>
 <body class="container">
     <header>
         <h1 class="display-4"><%= title %></h1>
     </header>
     <div role="main">
-        <p>これはboardsのindexですよん!🐉</p>
+        <!-- <p>これはboardsのindexですよん!🐉</p> -->
         <p class="h4"> ようこそ <%= login.name %>さん</p>
         <form action="/boards/add" method="post">
             <div class="row">
@@ -30,12 +31,16 @@
         </table>
 
         <ul class="pagination justify-content-center">
+            <% if (page > 0) { %>
             <li class="page-item">
-                <a href="/boards/<%= page - 1 %>" class="page-link">&lt;&lt; prev</a>
+                <a href="/boards/<%= page - 1 %>" class="page-link">&lt;&lt; 前へ</a>
             </li>
+            <% } %>
+            <% if (hasNextPage) { %>
             <li class="page-item">
-                <a href="/boards/<%= page + 1 %>" class="page-link">Next &gt;&gt;</a>
+                <a href="/boards/<%= page + 1 %>" class="page-link">次へ &gt;&gt;</a>
             </li>
+            <% } %>
         </ul>
     </div>
 </body>

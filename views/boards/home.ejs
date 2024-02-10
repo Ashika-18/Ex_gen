@@ -21,16 +21,20 @@
         </table>
 
         <ul class="pagenation justify-content-center">
+            <% if (page > 0) { %>
             <li class="page-item">
-                <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page - 1 %>" class="page-link">&lt;&lt; prev</a>
+                <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page - 1 %>" class="page-link">&lt;&lt; 前へ</a>
             </li>
+            <% } %>
+            <% if (hasNextPage) { %>
             <li>
-                <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page + 1 %>" class="page-link">Next &gt;&gt;</a>
+                <a href="/boards/home<%= userName %>/<%= accountId %>/<%= page + 1 %>" class="page-link">次へ &gt;&gt;</a>
             </li>
+            <% } %>
         </ul>
     </div>
     <div class="text-left">
-        <a href="/boards">&lt;&lt; Topへ </a>
+        <a href="/boards">&lt;&lt; TOPへ </a>
     </div>
 </body>
 </html>

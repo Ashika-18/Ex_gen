@@ -24,8 +24,14 @@ router.get('/', (req, res, next) => {
 
 //TOPページにページ番号をつけてアクセス
 router.get('/:page', (req, res, next) => {
+
     if (check(req, res)) { return };
     const pg = +req.params.page;
+    prisma.Board.count().then(totalCount => {
+        const totalPageCount = Math.ceil(totalCount / pnum);
+        const hasNextPage = pg < totalPageCount;
+        const currentPage = pg;
+
     prisma.Board.findMany({
         skip: pg * pnum,
         take: pnum,
@@ -36,13 +42,16 @@ router.get('/:page', (req, res, next) => {
             account: true,
         },
     }).then(brds => {
+        const hasNextPage = currentPage < totalPageCount;
         var data = {
             title: 'Boards',
             login: req.session.login,
             content: brds,
-            page: pg
+            page: pg,
+            hasNextPage: hasNextPage
         }
         res.render('boards/index', data);
+    });
     });
 });
 
@@ -64,29 +73,37 @@ router.post('/add', (req, res, next) => {
 
 //利用者のホーム
 router.get('/home/:user/:id/:page', (req, res, next) => {
-    if (check (req, res)) { return };
-    const id = +req.params.id;
     const pg = +req.params.page;
-    prisma.Board.findMany({
-        where: { accountId: id },
-        skip: pg * pnum,
-        take: pnum,
-        orderBy: [
-            {createdAt: 'desc'}
-        ],
-        include: {
-            account: true,
-        }, 
-    }).then(brds => {
-        const data = {
-            title: 'Boards',
-            login: req.session.login,
-            accountId: id,
-            userName: req.params.user,
-            content: brds,
-            page: pg
-        }
-        res.render('boards/home', data);
+    const id = +req.params.id;
+
+    prisma.Board.count({ where: { accountId: id } }).then(totalCount => {
+        const totalPageCount = Math.ceil(totalCount / pnum);
+        const hasNextPage = pg < totalPageCount - 1;
+
+        if (check(req, res)) { return };
+
+        prisma.Board.findMany({
+            where: { accountId: id },
+            skip: pg * pnum,
+            take: pnum,
+            orderBy: [
+                { createdAt: 'desc' }
+            ],
+            include: {
+                account: true,
+            },
+        }).then(brds => {
+            const data = {
+                title: 'Boards',
+                login: req.session.login,
+                accountId: id,
+                userName: req.params.user,
+                content: brds,
+                page: pg,
+                hasNextPage: hasNextPage
+            };
+            res.render('boards/home', data);
+        });
     });
 });
 
@@ -111,10 +128,10 @@ router.post('/delete/:id', (req, res, next) => {
                     title: 'User/Delete',
                     content: '削除中にエラーが発生しました。<br>' + error.message
                 }
-                res.render('/delete', data);
+                res.render('/error', data);
             });
         } else {
-            res.status(403).send('このメッセージを削除する権限がありません。');
+            res.status(403).send('<span style="color: red;">このメッセージを削除する権限がありません。</span>');
         }
     }).catch(error => {
         var data = {

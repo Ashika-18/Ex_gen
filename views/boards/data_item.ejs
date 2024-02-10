@@ -4,11 +4,16 @@
             <a href="/boards/home/<%= val.account.name %>/<%= val.accountId %>/0" class="text-dark"><%= val.account.name %></a>
         </th>
         <td class="col-7"><%= val.message %></td>
-        <%
-            var d = new Date(val.createdAt);
-            var dstr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ''
-             + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+        <% var d = new Date(val.createdAt);
+           var dstr = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ''
+                      + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
         %>
-        <td class="col-3"><%= dstr %></td>
+        <td class="col-2"><%= dstr %></td>
+        <!-- メッセージを削除するリンク -->
+        <td class="col-1">
+            <form action="/boards/delete/<%= val.id %>" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger btn-sm">削除</button>
+            </form>
+        </td>
     </tr>
 <% } %>
