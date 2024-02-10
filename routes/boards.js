@@ -138,7 +138,7 @@ router.post('/delete/:id', (req, res, next) => {
             title: 'User/Delete',
             content: 'メッセージの取得中にエラーが発生しました。<br>' + error.message
         }
-        res.render('/delete', data);
+        res.render('delete', data);
     });
 });
 
