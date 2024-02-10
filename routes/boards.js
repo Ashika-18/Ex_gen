@@ -4,6 +4,9 @@ const router = express.Router();
 const ps = require('@prisma/client');
 const prisma = new ps.PrismaClient();
 
+// PostgreSQLモジュールを追加する
+const { Pool } = require('pg');
+
 const pnum = 5;
 
 //ログインのチェック
