@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -15,12 +16,12 @@
     <div role="main">
         <p>これはboardsのindexです!</p>
         <p class="h4"> Welcome <%= login.name %>さん</p>
-        <form action="/boards/add" method="post">
+        <form action="/boards/edit" method="post">
             <div class="row">
                 <div class="col-10">
-                    <input type="text" name="msg" class="form-control">
+                    <input type="text" name="msg" class="form-control" value="<%= board.content %>">
                 </div>
-                <input type="submit" value="送信" class="btn btn-primary col-2">
+                <input type="submit" value="編集" class="btn btn-success col-2">
             </div>
         </form>
 
@@ -29,19 +30,6 @@
             <%- include('data_item', { val: content[i] }) %>
             <% } %>
         </table>
-
-        <ul class="pagination justify-content-center">
-            <% if (page > 0) { %>
-            <li class="page-item">
-                <a href="/boards/<%= page - 1 %>" class="page-link">&lt;&lt; 前へ</a>
-            </li>
-            <% } %>
-            <% if (hasNextPage) { %>
-            <li class="page-item">
-                <a href="/boards/<%= page + 1 %>" class="page-link">次へ &gt;&gt;</a>
-            </li>
-            <% } %>
-        </ul>
     </div>
 </body>
 </html>

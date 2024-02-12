@@ -126,15 +126,9 @@ router.post('/delete/:id', (req, res, next) => {
                 where: { id: messageId }
             }).then(() => {
                 res.redirect('/boards');
-            }).catch(error => {
-                var data = {
-                    title: 'User/Delete',
-                    content: '削除中にエラーが発生しました。<br>' + error.message
-                }
-                res.render('/error', data);
             });
         } else {
-            res.status(403).send('<span style="color: red;">このメッセージを削除する権限がありません。</span>');
+            res.status(403).send('<h1><span style="color: red;">このメッセージを削除する権限がありません。</span></h1>');
         }
     }).catch(error => {
         var data = {
@@ -142,6 +136,35 @@ router.post('/delete/:id', (req, res, next) => {
             content: 'メッセージの取得中にエラーが発生しました。<br>' + error.message
         }
         res.render('delete', data);
+    });
+});
+
+//メッセージの編集
+router.post('/edit/:id', (req, res, next) => {
+    if (check(req, res)) { return };
+    const messageId = +req.params.id;
+    const accountId = req.session.login.id;
+
+    // メッセージの所有者の確認
+    prisma.Board.findUnique({
+        where: { id: messageId },
+        select: { accountId: true }
+    }).then(board => {
+        if (board && board.accountId === accountId) {
+            prisma.Board.edit({
+                where: { id: messageId }
+            }).then(() => {
+                res.redirect('/boards');
+            });
+        } else {
+            res.status(403).send('<h1><span style="color: red;">このメッセージを編集する権限がありません。</span></h1>');
+        }
+    }).catch(error => {
+        var data = {
+            title: 'User/Edit',
+            content: 'メッセージの取得中にエラーが発生しました。<br>' + error.message
+        }
+        res.render('/edit', data);
     });
 });
 
