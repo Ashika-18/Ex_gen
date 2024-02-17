@@ -110,61 +110,48 @@ router.get('/home/:user/:id/:page', (req, res, next) => {
     });
 });
 
-// メッセージ削除の追加
-router.post('/delete/:id', (req, res, next) => {
-    if (check(req, res)) { return };
-    const messageId = +req.params.id;
-    const accountId = req.session.login.id;
+//編集ページGET
+router.get('/edit/:id', (req, res, next) => {
 
-    // メッセージの所有者の確認
+        const messageId = +req.params.id;
+        const accountId = req.session.login.id;
+
     prisma.Board.findUnique({
         where: { id: messageId },
-        select: { accountId: true }
+        select: { accountId: true, message: true }
     }).then(board => {
         if (board && board.accountId === accountId) {
-            prisma.Board.delete({
-                where: { id: messageId }
-            }).then(() => {
-                res.redirect('/boards');
-            });
-        } else {
-            res.status(403).send('<h1><span style="color: red;">このメッセージを削除する権限がありません。</span></h1>');
-        }
-    }).catch(error => {
-        var data = {
-            title: 'User/Delete',
-            content: 'メッセージの取得中にエラーが発生しました。<br>' + error.message
-        }
-        res.render('delete', data);
-    });
-});
-
-//メッセージの編集
-router.post('/edit/:id', (req, res, next) => {
-    if (check(req, res)) { return };
-    const messageId = +req.params.id;
-    const accountId = req.session.login.id;
-
-    // メッセージの所有者の確認
-    prisma.Board.findUnique({
-        where: { id: messageId },
-        select: { accountId: true }
-    }).then(board => {
-        if (board && board.accountId === accountId) {
-            prisma.Board.edit({
-                where: { id: messageId }
-            }).then(() => {
-                res.redirect('/boards');
-            });
+            var data = {
+                title: 'Board/Edit',
+                board: board
+            };
+            res.render('boards/edit', data)
         } else {
             res.status(403).send('<h1><span style="color: red;">このメッセージを編集する権限がありません。</span></h1>');
         }
     }).catch(error => {
         var data = {
-            title: 'User/Edit',
+            title: 'Board/Edit',
             content: 'メッセージの取得中にエラーが発生しました。<br>' + error.message
         }
-        res.render('/edit', data);
+        console.error('Error fetching board:', error);
+        res.render('boards/edit', data);
+    });
+});
+
+// 編集POST
+router.post('/edit', (req, res, next) => {
+    const { id, msg } = req.body; // フォームから id を受け取る
+    prisma.Board.update({
+        where: { id: parseInt(id) }, // id を指定して更新
+        data: {
+            message: msg
+        }
+    }).then((updatedBoard) => {
+        res.redirect('/boards');
+    }).catch(error => {
+        console.error('Error updating board:', error);
+        res.status(500).send('エラーが発生しました');
     });
 });
 

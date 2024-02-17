@@ -14,22 +14,16 @@
         <h1 class="display-4"><%= title %></h1>
     </header>
     <div role="main">
-        <p>これはboardsのindexです!</p>
-        <p class="h4"> Welcome <%= login.name %>さん</p>
-        <form action="/boards/edit" method="post">
+        <p>これはboardsのEdit画面です!</p>
+        <p class="h4"> Welcome <%= board.name %>さん</p>
+        <form action="/boards/edit/<%= board.id %>" method="post">
             <div class="row">
                 <div class="col-10">
-                    <input type="text" name="msg" class="form-control" value="<%= board.content %>">
+                    <input type="text" name="msg" class="form-control" value="<%= board.message %>">
                 </div>
                 <input type="submit" value="編集" class="btn btn-success col-2">
             </div>
         </form>
-
-        <table class="table mt-5">
-            <% for (let i in content) { %>
-            <%- include('data_item', { val: content[i] }) %>
-            <% } %>
-        </table>
     </div>
 </body>
 </html>

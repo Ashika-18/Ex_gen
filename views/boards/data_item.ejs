@@ -11,7 +11,7 @@
         <td class="col-2"><%= dstr %></td>
         <!-- メッセージを編集するリンク -->
         <td class="col-1">
-            <form action="/boards/edit/<%= val.id %>" method="POST" style="display: inline;">
+            <form action="/boards/edit/<%= val.id %>" method="GET" style="display: inline;">
                 <button type="submit" class="btn btn-success btn-sm">編集</button>
             </form>
         </td>
