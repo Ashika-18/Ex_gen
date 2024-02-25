@@ -182,11 +182,11 @@ router.get('/delete/:id', (req, res, next) => {
     });
 });
 
-router.post('/delete', (req, res, next) => {
+router.post('/delete/:id', (req, res, next) => {
     const msg = req.body.msg;
-    const id = +req.body.messageId; 
+    const id = +req.params.id; 
     prisma.Board.delete({
-        where: { id: +id }, 
+        where: { id: id }, 
         
     }).then((deleteBoard) => {
         res.redirect('/boards');
