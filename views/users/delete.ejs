@@ -21,14 +21,6 @@
             <th>PASSWORD</th>
             <td><%= user.pass %></td>
         </tr>
-        <tr>
-            <th>MAIL</th>
-            <td><%= user.mail %></td>
-        </tr>
-        <tr>
-            <th>AGE</th>
-            <td><%= user.age %></td>
-        </tr>
        </table>
        <form action="/users/delete" method="post">
         <input type="hidden" name="id" value="<%= user.id %>">
