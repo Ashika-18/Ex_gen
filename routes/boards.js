@@ -110,7 +110,7 @@ router.get('/home/:user/:id/:page', (req, res, next) => {
     });
 });
 
-//編集ページGET
+//編集ページ
 router.get('/edit/:id', (req, res, next) => {
 
         const messageId = +req.params.id;
@@ -123,7 +123,8 @@ router.get('/edit/:id', (req, res, next) => {
         if (board && board.accountId === accountId) {
             var data = {
                 title: 'Board/Edit',
-                board: board
+                board: board,
+                messageId: messageId
             };
             res.render('boards/edit', data)
         } else {
@@ -139,19 +140,62 @@ router.get('/edit/:id', (req, res, next) => {
     });
 });
 
-// 編集POST
 router.post('/edit', (req, res, next) => {
-    const { id, msg } = req.body; // フォームから id を受け取る
+    const msg = req.body.msg;
+    const id = +req.body.messageId; 
     prisma.Board.update({
-        where: { id: parseInt(id) }, // id を指定して更新
+        where: { id: +id }, 
         data: {
             message: msg
         }
     }).then((updatedBoard) => {
         res.redirect('/boards');
     }).catch(error => {
+        console.log(req.body);
         console.error('Error updating board:', error);
         res.status(500).send('エラーが発生しました');
+    });
+});
+
+//削除ページ
+router.get('/delete/:id', (req, res, next) => {
+
+    const messageId = +req.params.id;
+    const accountId = req.session.login.id;
+
+prisma.Board.findUnique({
+    where: { id: messageId },
+    select: { accountId: true, message: true }
+}).then(board => {
+        if (board && board.accountId === accountId) {
+            var data = {
+                title: 'Board/Delete',
+                board: board,
+                messageId: messageId
+            };
+            res.render('boards/delete', data)
+        } else {
+            res.status(403).send('<h1><span style="color: red;">このメッセージを削除する権限がありません。</span></h1>');
+        }
+
+    }).catch(error => {
+        console.log(req.body);
+        console.error('Error updating board:', error);
+        res.status(500).send('エラーが発生しました');
+        });
+});
+
+router.post('/delete/:id', (req, res, next) => {
+    const id = +req.body.messageId; 
+
+prisma.Board.delete({
+    where: { id: +id }, 
+}).then((deleteBoard) => {
+    res.redirect('/boards');
+}).catch(error => {
+    console.log(req.body);
+    console.error('Error updating board:', error);
+    res.status(500).send('エラーが発生しました');
     });
 });
 

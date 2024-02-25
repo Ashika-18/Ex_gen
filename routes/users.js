@@ -100,8 +100,8 @@ router.get('/edit/:id', (req, res, next) => {
 });
 
 router.post('/edit', (req, res, next) => {
-  const {id, name, pass, mail, age } = req.body;
-  prisma.user.update({
+  const {id, name, pass } = req.body;
+  prisma.User.update({
     where: { id: +id },
     data: {
       name: name,

@@ -15,9 +15,9 @@
     </header>
     <div role="main">
         <p>これはboardsのEdit画面です!</p>
-        <p class="h4"> Welcome <%= board.name %>さん</p>
-        <form action="/boards/edit/<%= board.id %>" method="post">
+        <form action="/boards/edit" method="post">
             <div class="row">
+                <input type="hidden" name="messageId" id="messageId" value="<%= messageId %>">
                 <div class="col-10">
                     <input type="text" name="msg" class="form-control" value="<%= board.message %>">
                 </div>
