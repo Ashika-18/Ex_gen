@@ -5,6 +5,7 @@ const prisma = new ps.PrismaClient();
 
 // PostgreSQLモジュールを追加する
 const { Pool } = require('pg');
+const session = require('express-session');
 
 var lastCursor = 0;
 var cursor = 1;
@@ -60,29 +61,47 @@ router.get('/add', (req, res, next) => {
   res.render('users/add', data);
 });
 
-router.post('/add', (req, res, next) => {
-  prisma.User.create({
-    data:{
-      name: req.body.name,
-      pass: req.body.pass
-    }
-  })
-  .then((createdUser) => {
+router.post('/add', async (req, res, next) => {
+  try {
+    //同じ名前のユーザーが存在するかの確認
+    const existingUser = await prisma.User.findUnique({
+      where: {
+        name: req.body.name
+      }
+    });
+     
+    if (existingUser) {
+      //同じ名前がある時の処理
+      const data = {
+        message: '同じ名前が存在します。他の名前を入力してください。',
+        returnTo: '/users/index'
+      };
+      console.log(data.returnTo);
+      return res.render('error',data);
+    };
+    
+    //新しいユーザーを作成
+    const createdUser = await prisma.User.create({
+      data: {
+        name: req.body.name,
+        pass: req.body.pass
+      }
+    });
+
     const data = {
-      title: 'User Created',
+      title: 'User/Created',
       content: [createdUser],
-      message: `${createdUser.name} が作成されました!🐉`
+      message: `${createdUser.name} が作成されました。`
     };
+
     res.render('users/index', data);
-  })
-  .catch((error) => {
+  } catch (error) {
     const data = {
-      title: 'Error',
-      message: 'ユーザーの作成中にエラーが発生しました。もう一度試してください。',
-      error: error
-    };
-    res.render('error', data);
-  });
+      message: 'ユーザーの追加中にエラーが発生しました。',
+      returnTo: '/users/index'
+    }
+    return res.render('error', data);
+  }
 });
 
 //更新の処理edit
