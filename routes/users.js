@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
   prisma.user.findMany({
     orderBy: [{id: 'asc'}],
     cursor: { id:cursor },
-    take: 3,
+    take: 10,
   }).then( users=> {
     const data = {
       title: 'Users/Index',
@@ -62,46 +62,33 @@ router.get('/add', (req, res, next) => {
 });
 
 router.post('/add', async (req, res, next) => {
-  try {
-    //同じ名前のユーザーが存在するかの確認
-    const existingUser = await prisma.User.findUnique({
+  async function goBack() {
+    const existingUser = await prisma.User.findUnique ({
       where: {
         name: req.body.name
       }
     });
-     
     if (existingUser) {
-      //同じ名前がある時の処理
-      const data = {
-        message: '同じ名前が存在します。他の名前を入力してください。',
-        returnTo: '/users/index'
-      };
-      console.log(data.returnTo);
-      return res.render('error',data);
-    };
-    
-    //新しいユーザーを作成
-    const createdUser = await prisma.User.create({
-      data: {
-        name: req.body.name,
-        pass: req.body.pass
+      res.status(400).json({ message: '同じ名前が存在します。他の名前を入力してください。' });
+
+    } else {
+      try {
+        await prisma.User.create ({
+          data: {
+            name: req.body.name,
+            pass: req.body.pass
+          }
+        });
+        console.log(`${req.body.name}を追加しました`);
+        res.json({ success: 'ユーザーを追加しました。' });
+      } catch (error) {
+        console.error('ユーザーの追加中にエラーが発生しました。', error);
+        res.status(500).json({ error: 'ユーザーの追加中にエラーが発生しました。' });
       }
-    });
-
-    const data = {
-      title: 'User/Created',
-      content: [createdUser],
-      message: `${createdUser.name} が作成されました。`
-    };
-
-    res.render('users/index', data);
-  } catch (error) {
-    const data = {
-      message: 'ユーザーの追加中にエラーが発生しました。',
-      returnTo: '/users/index'
     }
-    return res.render('error', data);
   }
+
+  goBack();
 });
 
 //更新の処理edit
