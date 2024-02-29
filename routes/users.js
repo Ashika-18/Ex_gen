@@ -69,8 +69,7 @@ router.post('/add', async (req, res, next) => {
       }
     });
     if (existingUser) {
-      res.status(400).json({ message: '同じ名前が存在します。他の名前を入力してください。' });
-
+      res.status(400).json({error: '同じ名前が存在します、他の名前を入力してください。'});
     } else {
       try {
         await prisma.User.create ({

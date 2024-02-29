@@ -20,34 +20,32 @@ function userDelete(accountId) {
     };
 };
 
-// user追加フォームの送信時に呼び出される関数
-document.querySelector('form').addEventListener('submit', handleSubmit);
+// // user追加フォームの送信時に呼び出される関数
 async function handleSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const name = formData.get('name');
-    const pass = formData.get('pass');
-  
-    try {
-      const response = await fetch('/users/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, pass })
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
-      }
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const name = formData.get('name');
+  const pass = formData.get('pass');
 
-      // 成功した場合の処理
-      window.location.href = '/users';
-      
-    } catch (error) {
-      alert(error.message); // エラーメッセージをalertウィンドウに表示
-    }
+  const response = await fetch('/users/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, pass })
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    alert(errorData.error);
+    window.location.href = '/boards';
+  } else {
+  // 成功した場合の処理
+  window.location.href = '/users';
+  }
 }
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('form').addEventListener('submit', handleSubmit);
+});
 
 console.log('javascriptは読み込みOK');
