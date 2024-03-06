@@ -4,9 +4,9 @@ function confirmDelete(messageId) {
         // 確認ダイアログでOKをクリックした場合の処理
         window.location.href = '/boards/delete/' + messageId;
     } else {
-        // キャンセルされた場合の処理
-        alert('削除がキャンセルされました。');
-    };
+      // キャンセルされた場合の処理
+      alert('削除がキャンセルされました。');
+  };
 };
 
 //アカウントの削除

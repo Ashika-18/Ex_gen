@@ -174,7 +174,7 @@ router.get('/delete/:id', (req, res, next) => {
             };
             res.render('boards/delete', data);
         } else {
-            res.status(403).send('<h1><span style="color: red;">このメッセージを削除する権限がありません。</span></h1>');
+            res.status(400).json({error: '<h1><span style="color: red;">このメッセージを削除する権限がありません。</span></h1>'});
         }
     }).catch(error => {
         console.error('Error fetching board:', error);
