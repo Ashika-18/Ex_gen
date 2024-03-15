@@ -6,6 +6,7 @@ function confirmDelete(messageId) {
     } else {
       // キャンセルされた場合の処理
       alert('削除がキャンセルされました。');
+      return false;
   };
 };
 
@@ -20,7 +21,7 @@ function userDelete(accountId) {
     };
 };
 
-// // user追加フォームの送信時に呼び出される関数
+// user追加フォームの送信時に呼び出される関数
 async function handleSubmit(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
@@ -45,7 +46,13 @@ async function handleSubmit(event) {
   }
 }
 document.addEventListener('DOMContentLoaded', function() {
-  document.querySelector('form').addEventListener('submit', handleSubmit);
+  const form = document.querySelector('.users_add'); // クラス名を指定してフォーム要素を取得
+  if (form) {
+    form.addEventListener('submit', handleSubmit); // submit イベントのリスナーを追加
+  }
 });
+// document.addEventListener('DOMContentLoaded', function() {
+//   document.querySelector('form[action="/users/add"]').addEventListener('submit', handleSubmit);
+// });
 
 console.log('javascriptは読み込みOK');
