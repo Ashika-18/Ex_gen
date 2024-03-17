@@ -17,7 +17,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   messages Board[]
-  message Coments[]
+  content Comment[]
 }
 
 model Board {
@@ -27,13 +27,16 @@ model Board {
   accountId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  content  Comment[]
 }
 
-model Coments {
-  id Int @id @default(autoincrement())
-  message String
-  account User @relation(fields: [accountId], references: [id])
-  accountId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Comment {
+  id        Int       @id @default(autoincrement())
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  Int
+  message   Board   @relation(fields: [messageId], references: [id])
+  messageId Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
