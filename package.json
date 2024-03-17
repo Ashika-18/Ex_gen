@@ -6,7 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
-    "@prisma/client": "^5.9.1",
+    "@prisma/client": "^5.11.0",
     "cookie-parser": "~1.4.6",
     "debug": "~4.3.4",
     "dotenv": "^16.4.1",

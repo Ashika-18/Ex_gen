@@ -19,8 +19,22 @@
         <td class="col-1">
             <form action="/boards/delete/<%= val.id %>" method="POST" style="display: inline;">
                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete('<%= val.id %>')">削除</button>
-                <!-- <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete('<%= val.id %>')">削除</button> -->
             </form>
+        </td>
+    </tr>
+    <!-- コメント欄 -->
+    <tr class="row comment-row" style="display: none;">
+        <td colspan="5">
+            <form action="/boards/comment/<%= val.id %>" method="POST">
+                <textarea name="comment" rows="2" class="form-control" placeholder="コメントを追加"></textarea>
+                <button type="submit" class="btn btn-primary btn-sm mt-2">コメントを追加</button>
+            </form>
+        </td>
+    </tr>
+    <!-- コメントをトグルするためのリンク -->
+    <tr class="row">
+        <td colspan="6">
+            <button class="btn btn-link comment-toggle">コメント</button>
         </td>
     </tr>
 <% } %>

@@ -52,4 +52,16 @@ async function handleSubmit(event) {
   }
 }
 
+//コメント欄の表示と非表示
+document.querySelectorAll('.comment-toggle').forEach(function(element) {
+  element.addEventListener('click', function() {
+      var commentRow = this.parentElement.parentElement.nextElementSibling;
+      if (commentRow.style.display === 'none' || commentRow.style.display === '') {
+          commentRow.style.display = 'table-row';
+      } else {
+          commentRow.style.display = 'none';
+      }
+  });
+});
+
 console.log('javascriptは読み込みOK');
