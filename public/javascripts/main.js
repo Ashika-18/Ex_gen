@@ -22,6 +22,10 @@ function userDelete(accountId) {
 };
 
 // user追加フォームの送信時に呼び出される関数
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('form[action="/users/add"]').addEventListener('submit', handleSubmit);
+});
+
 async function handleSubmit(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
@@ -38,21 +42,14 @@ async function handleSubmit(event) {
 
   if (!response.ok) {
     const errorData = await response.json();
-    alert(errorData.error);
-    window.location.href = '/boards';
+    if (errorData.error) {
+      alert(errorData.error);
+    } else {
+      alert("エラーが発生しました。");
+    }
   } else {
-  // 成功した場合の処理
-  window.location.href = '/users';
+    window.location.href = '/boards';
   }
 }
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.querySelector('.users_add'); // クラス名を指定してフォーム要素を取得
-  if (form) {
-    form.addEventListener('submit', handleSubmit); // submit イベントのリスナーを追加
-  }
-});
-// document.addEventListener('DOMContentLoaded', function() {
-//   document.querySelector('form[action="/users/add"]').addEventListener('submit', handleSubmit);
-// });
 
 console.log('javascriptは読み込みOK');
