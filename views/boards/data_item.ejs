@@ -25,18 +25,6 @@
                         </form>
                     </td>
                 </tr>
-                <!-- コメントをトグルするためのリンクとコメント欄 -->
-                <tr class="row comment-toggle-row">
-                    <td colspan="6">
-                        <button class="btn btn-link comment-toggle">コメント</button>
-                        <div class="comment-row">
-                            <form action="/boards/comment/add/<%= val.id %>" method="POST">
-                                <textarea name="comment" rows="2" class="form-control" placeholder="コメントを追加"></textarea>
-                                <button type="submit" class="btn btn-primary btn-sm mt-2">コメントを追加</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
             </table>
         </td>
     </tr>
